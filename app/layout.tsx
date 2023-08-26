@@ -5,6 +5,12 @@ import { Open_Sans } from 'next/font/google';
 // Authentication with Clerk
 import { ClerkProvider } from '@clerk/nextjs';
 
+// Themes provider
+import { ThemeProvider } from '@/components/providers/theme-provider';
+
+// Utils
+import { cn } from '@/lib/utils';
+
 const font = Open_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,8 +25,17 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang='en'>
-        <body className={font.className}>{children}</body>
+      <html lang='en' suppressHydrationWarning>
+        <body className={cn(font.className, 'bg-white dark:bg-[#313338]')}>
+          <ThemeProvider
+            enableSystem
+            attribute='class'
+            defaultTheme='dark'
+            storageKey='discord-theme'
+          >
+            {children}
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
